@@ -14,9 +14,13 @@ struct Args {
     #[arg(short, long)]
     output: String,
 
-    /// Delimiter to use
-    #[arg(short, long, default_value = ",")]
-    delimiter: char,
+    /// Delimiter to read
+    #[arg(long, default_value = ",")]
+    din: char,
+
+    /// Delimiter to write
+    #[arg(long, default_value = ",")]
+    dout: char,
 
     /// Escape with backslash instead of double-quoting
     #[arg(short, long)]
@@ -34,13 +38,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut reader = ReaderBuilder::new()
         .has_headers(false)
         .flexible(args.flexible)
-        .delimiter(args.delimiter as u8)
+        .delimiter(args.din as u8)
         .from_reader(in_file);
 
     let out_file = File::create(&args.output)?;
     let mut writer = WriterBuilder::new()
         .flexible(args.flexible)
         .quote_style(csv::QuoteStyle::Always)
+        .delimiter(args.dout as u8)
         .double_quote(!(args.escape))
         .from_writer(out_file);
 
