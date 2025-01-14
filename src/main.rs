@@ -1,5 +1,5 @@
 use clap::Parser;
-use csv::{ReaderBuilder, WriterBuilder};
+use csv::ReaderBuilder;
 use std::fs::File;
 use std::{error::Error, io::Write};
 
